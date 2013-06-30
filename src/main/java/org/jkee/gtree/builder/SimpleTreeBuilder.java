@@ -1,7 +1,7 @@
-package org.jkee.gtree;
+package org.jkee.gtree.builder;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import org.jkee.gtree.Tree;
 
 import java.util.List;
 import java.util.Map;
@@ -9,6 +9,7 @@ import java.util.Map;
 /**
  * Simple builder, requires hashing and parent extracting {@link Funnel}
  * Stateless
+ * Actually using {@link KeyTreeBuilder} to build, using T as a link
  *
  * @author jkee
  */
@@ -43,24 +44,22 @@ public class SimpleTreeBuilder<T> {
      * @throws IllegalStateException if no roots found
      */
     private List<Tree<T>> buildForest(Iterable<? extends T> values) {
-        Map<T, Tree<T>> nodes = Maps.newHashMap();
-        for (T value : values) {
-            nodes.put(value, new Tree<T>(value));
-        }
-        List<Tree<T>> roots = Lists.newArrayList();
-        for (Map.Entry<T, Tree<T>> entry : nodes.entrySet()) {
-            T value = entry.getKey();
-            Tree<T> valueTree = entry.getValue();
-            T parent = funnel.getParent(value);
-            if (parent == null) { //root
-                roots.add(valueTree);
-            } else {
-                Tree<T> parentNode = nodes.get(parent);
-                if (parentNode != null) parentNode.addChild(valueTree);
+        KeyTreeBuilder<T, T> keyTreeBuilder = new KeyTreeBuilder<T, T>(new KeyTreeBuilder.Funnel<T, T>() {
+            @Override
+            public T getKey(T node) {
+                return node;
             }
-        }
-        if (roots.isEmpty()) throw new IllegalStateException("No roots found, cycle links? Values size: " + nodes.size());
-        return roots;
+
+            @Override
+            public T getParentKey(T node) {
+                return funnel.getParent(node);
+            }
+        });
+        KeyTreeBuilder.BuildResult<T, T> result = keyTreeBuilder.build(values);
+        Map<T, Tree<T>> roots = result.getRoots();
+        if (roots.isEmpty())
+            throw new IllegalStateException("No roots found, cycle links? Values size: " + result.getAll().size());
+        return Lists.newArrayList(roots.values());
     }
 
 

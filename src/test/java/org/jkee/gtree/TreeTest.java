@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
+import org.jkee.gtree.builder.SimpleTreeBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +14,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * todo
  * @author jkee
  */
 public class TreeTest {
