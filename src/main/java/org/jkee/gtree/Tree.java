@@ -154,11 +154,11 @@ public class Tree<T> implements Serializable, Iterable<T> {
     }
 
     public void toString(StringBuilder sb, int depth) {
+        if (depth != 0) sb.append(System.getProperty("line.separator"));
         for (int i = 0; i < depth; i++) {
             sb.append('\t');
         }
         sb.append(value);
-        sb.append(System.getProperty("line.separator"));
         if (chld != null) for (Tree<T> ts : chld) {
             ts.toString(sb, depth + 1);
         }
