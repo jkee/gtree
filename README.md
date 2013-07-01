@@ -65,6 +65,7 @@ Full example available [here](https://github.com/jkee/gtree/blob/master/src/test
 #### 2. Building url tree
 Assume you have a batch of url and you want to build a tree structure. It's simple, really.
 All we need is the `PathTreeBuilder`.
+
 1. Create a `Funnel` which knows how to extract a path from your object. In case of URL it will be a split by `/` (simplistically).
     
     ```java
