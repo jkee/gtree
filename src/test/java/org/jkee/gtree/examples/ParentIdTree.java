@@ -1,7 +1,7 @@
 package org.jkee.gtree.examples;
 
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import org.jkee.gtree.Tree;
 import org.jkee.gtree.builder.KeyTreeBuilder;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public class ParentIdTree {
 
         List<Entity> entities = Lists.newArrayList(te1, te12, te13, te14, te131, te141, te142);
 
-        KeyTreeBuilder<Integer, Entity> builder = new KeyTreeBuilder<Integer, Entity>(new KeyTreeBuilder.Funnel<Integer, Entity>() {
+        KeyTreeBuilder.Funnel<Integer, Entity> funnel = new KeyTreeBuilder.Funnel<Integer, Entity>() {
             @Override
             public Integer getKey(Entity node) {
                 return node.id;
@@ -58,10 +58,11 @@ public class ParentIdTree {
                 if (node.parentId == 0) return null;
                 return node.parentId;
             }
-        });
+        };
 
-        KeyTreeBuilder.BuildResult<Integer, Entity> result = builder.build(entities);
-        System.out.println(Iterables.getOnlyElement(result.getRoots().values()));
+        KeyTreeBuilder<Integer, Entity> builder = new KeyTreeBuilder<Integer, Entity>(funnel);
+        Tree<Entity> tree = builder.buildTree(entities);
+        System.out.println(tree);
 
     }
 

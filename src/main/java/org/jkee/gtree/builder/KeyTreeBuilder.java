@@ -1,5 +1,6 @@
 package org.jkee.gtree.builder;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import org.jkee.gtree.Tree;
 
@@ -25,6 +26,15 @@ public class KeyTreeBuilder<K, T> {
 
     public KeyTreeBuilder(Funnel<K, T> funnel) {
         this.funnel = funnel;
+    }
+
+    public Tree<T> buildTree(Iterable<? extends T> values) {
+        BuildResult<K, T> result = build(values);
+        Map<K, Tree<T>> roots = result.getRoots();
+        if (roots.isEmpty())
+            throw new IllegalStateException("No roots found, cycle links? Values size: " + result.getAll().size());
+        if (roots.size() > 1) throw new IllegalStateException("Multiple roots found, size: " + roots.size());
+        return Iterables.getOnlyElement(roots.values());
     }
 
     public BuildResult<K, T> build(Iterable<? extends T> values) {

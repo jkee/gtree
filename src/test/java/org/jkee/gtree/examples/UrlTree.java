@@ -33,7 +33,8 @@ public class UrlTree {
                 "/about",
                 "/home/url3/more"
         );
-        List<Tree<String>> build = new PathTreeBuilder<String, String>(urlFunnel).build(urls);
+        PathTreeBuilder<String, String> builder = new PathTreeBuilder<String, String>(urlFunnel);
+        List<Tree<String>> build = builder.build(urls);
         for (Tree<String> strings : build) {
             System.out.println(strings);
         }
