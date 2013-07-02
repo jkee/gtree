@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.sun.istack.internal.Nullable;
 
 import java.io.Serializable;
 import java.util.*;
@@ -78,7 +77,6 @@ public class Tree<T> implements Serializable, Iterable<T> {
      * Does not modify source tree
      * Children of filtered nodes will be dropped
      */
-    @Nullable
     public Tree<T> filter(Predicate<T> predicate) {
         if (!predicate.apply(value)) return null;
         if (chld == null) return new Tree<T>(value);
@@ -119,7 +117,8 @@ public class Tree<T> implements Serializable, Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         if (chld == null) return Iterators.singletonIterator(value);
-        //вот она, сила функционального подхода!
+        // functional approach power! but expensive
+        // todo custom iterator
         return Iterators.concat(
                 Iterators.singletonIterator(value),
                 Iterables.concat(chld).iterator()
