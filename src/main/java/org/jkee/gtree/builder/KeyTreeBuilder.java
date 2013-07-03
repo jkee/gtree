@@ -51,7 +51,10 @@ public class KeyTreeBuilder<K, T> {
                 roots.put(entry.getKey(), valueTree);
             } else {
                 Tree<T> parentNode = nodes.get(parentKey);
-                if (parentNode != null) parentNode.addChild(valueTree);
+                if (parentNode != null) {
+                    parentNode.addChild(valueTree);
+                    valueTree.setParent(parentNode);
+                }
             }
         }
         return new BuildResult<K, T>(nodes, roots);

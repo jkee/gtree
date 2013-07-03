@@ -2,8 +2,7 @@ package org.jkee.gtree;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
+import org.jkee.gtree.iterator.DFIterator;
 
 import java.io.Serializable;
 import java.util.*;
@@ -79,14 +78,19 @@ public class Tree<T> implements Serializable, Iterable<T> {
      */
     public Tree<T> filter(Predicate<T> predicate) {
         if (!predicate.apply(value)) return null;
-        if (chld == null) return new Tree<T>(value);
+        Tree<T> newTree = new Tree<T>(value);
+        if (chld == null) return newTree;
         List<Tree<T>> newChilds = new ArrayList<Tree<T>>();
         for (Tree<T> tTree : chld) {
             Tree<T> filtered = tTree.filter(predicate);
-            if (filtered != null) newChilds.add(filtered);
+            if (filtered != null) {
+                filtered.setParent(newTree);
+                newChilds.add(filtered);
+            }
         }
-        if (newChilds.isEmpty()) return new Tree<T>(value);
-        return new Tree<T>(value, newChilds);
+        if (newChilds.isEmpty()) return newTree;
+        newTree.chld = newChilds;
+        return newTree;
     }
 
 
@@ -116,14 +120,15 @@ public class Tree<T> implements Serializable, Iterable<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        if (chld == null) return Iterators.singletonIterator(value);
-        // functional approach power! but expensive
-        // todo custom iterator
-        return Iterators.concat(
-                Iterators.singletonIterator(value),
-                Iterables.concat(chld).iterator()
-        );
+        return new DFIterator<T>(this);
     }
+
+    /**
+     * Breadth-first
+     */
+    /*public Iterator<T> breadthFirstIterator() {
+        return new BFIterator();
+    }*/
 
     @Override
     public boolean equals(Object o) {
@@ -147,19 +152,25 @@ public class Tree<T> implements Serializable, Iterable<T> {
 
     @Override
     public String toString() {
+        return "node{" +
+                value +
+                '}';
+    }
+
+    public String toStringTree() {
         StringBuilder sb = new StringBuilder();
-        toString(sb, 0);
+        appendToString(sb, 0);
         return sb.toString();
     }
 
-    public void toString(StringBuilder sb, int depth) {
+    private void appendToString(StringBuilder sb, int depth) {
         if (depth != 0) sb.append(System.getProperty("line.separator"));
         for (int i = 0; i < depth; i++) {
             sb.append('\t');
         }
         sb.append(value);
         if (chld != null) for (Tree<T> ts : chld) {
-            ts.toString(sb, depth + 1);
+            ts.appendToString(sb, depth + 1);
         }
     }
 

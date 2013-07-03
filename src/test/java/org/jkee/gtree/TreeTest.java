@@ -75,9 +75,10 @@ public class TreeTest {
     public void testIterate() throws Exception {
         //depth-first
         List<TestEntity> required = Lists.newArrayList(te1, te12, te13, te131, te14, te141, te142);
-        System.out.println(testTree.toString());
         List<TestEntity> iterateOrder = Lists.newArrayList(testTree);
         assertEquals(required, iterateOrder);
+
+        System.out.println(testTree.toStringTree());
     }
 
     @Test
