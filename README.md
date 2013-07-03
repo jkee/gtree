@@ -9,7 +9,7 @@ _Beware, it is not a binary tree_
 - Iterable
 - Modification: mapping, filtering, sorting
 - Pretty-printing
-- _todo_ Different traversals
+- Different traversals - depth-first, breadth-first
 
 ### Builders
 
