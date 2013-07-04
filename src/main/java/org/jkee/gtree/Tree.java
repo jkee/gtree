@@ -2,6 +2,7 @@ package org.jkee.gtree;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import org.jkee.gtree.iterator.BFIterator;
 import org.jkee.gtree.iterator.DFIterator;
 
 import java.io.Serializable;
@@ -34,7 +35,61 @@ public class Tree<T> implements Serializable, Iterable<T> {
         chld = children;
     }
 
+    // ::::: Access operations
+
+    public List<Tree<T>> getChildren() {
+        return chld;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    public Tree<T> getParent() {
+        return parent;
+    }
+
+    public List<T> find(Predicate<T> predicate) {
+        List<T> builder = new ArrayList<T>();
+        for (T t : this) {
+            if (predicate.apply(t)) builder.add(t);
+        }
+        return builder;
+    }
+
+    public T findOne(Predicate<T> predicate) {
+        for (T t : this) {
+            if (predicate.apply(t)) return t;
+        }
+        return null;
+    }
+
+    /**
+     * Depth-first
+     */
+    @Override
+    public Iterator<T> iterator() {
+        return new DFIterator<T>(this);
+    }
+
+    /**
+     * Breadth-first
+     */
+    public Iterator<T> breadthFirstIterator() {
+        return new BFIterator<T>(this);
+    }
+
     // ::::: Modification operations
+
+    public void addChild(Tree<T> child) {
+        if (chld == null) chld = new ArrayList<Tree<T>>();
+        chld.add(child);
+    }
+
+
+    public void setParent(Tree<T> parent) {
+        this.parent = parent;
+    }
 
     /**
      *
@@ -93,42 +148,6 @@ public class Tree<T> implements Serializable, Iterable<T> {
         return newTree;
     }
 
-
-    public void addChild(Tree<T> child) {
-        if (chld == null) chld = new ArrayList<Tree<T>>();
-        chld.add(child);
-    }
-
-    public List<Tree<T>> getChildren() {
-        return chld;
-    }
-
-    public T getValue() {
-        return value;
-    }
-
-    public Tree<T> getParent() {
-        return parent;
-    }
-
-    public void setParent(Tree<T> parent) {
-        this.parent = parent;
-    }
-
-    /**
-     * Depth-first
-     */
-    @Override
-    public Iterator<T> iterator() {
-        return new DFIterator<T>(this);
-    }
-
-    /**
-     * Breadth-first
-     */
-    /*public Iterator<T> breadthFirstIterator() {
-        return new BFIterator();
-    }*/
 
     @Override
     public boolean equals(Object o) {
