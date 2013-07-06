@@ -11,6 +11,15 @@ _Beware, it is not a binary tree_
 - Pretty-printing
 - Different traversals - depth-first, breadth-first
 
+### Maven
+
+```xml
+<dependency>
+    <groupId>org.jkee.gtree</groupId>
+    <artifactId>gtree</artifactId>
+    <version>0.1</version>
+</dependency>
+```
 ### Builders
 
 - Key builder
