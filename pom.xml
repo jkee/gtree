@@ -68,6 +68,7 @@
             </executions>
             <configuration>
               <passphrase>${gpg.passphrase}</passphrase>
+              <keyname>victor.tarnavsky@gmail.com</keyname>
             </configuration>
           </plugin>
         </plugins>
