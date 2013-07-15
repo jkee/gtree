@@ -17,7 +17,7 @@ _Beware, it is not a binary tree_
 <dependency>
     <groupId>org.jkee.gtree</groupId>
     <artifactId>gtree</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
 </dependency>
 ```
 ### Builders
