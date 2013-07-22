@@ -98,11 +98,33 @@ public class Tree<T> implements Serializable, Iterable<T> {
      * @param <K> output type
      * @return mapped tree
      */
-    public <K> Tree<K> map(Function<T, K> f) {
-        K transformed = f.apply(value);
+    public <K> Tree<K> map(final Function<T, K> f) {
+        return mapTrees(new Function<Tree<T>, K>() {
+            @Override
+            public K apply(org.jkee.gtree.Tree<T> input) {
+                return f.apply(input.value);
+            }
+        });
+    }
+
+    /**
+     * Alias to {@link Tree#map(com.google.common.base.Function)}
+     */
+    public <K> Tree<K> transform(Function<T, K> f) {
+        return map(f);
+    }
+
+    /**
+     * Provides ability to map tree nodes using additional info - parents, children
+     * @param f mapping function
+     * @param <K> output type
+     * @return mapped tree
+     */
+    public <K> Tree<K> mapTrees(Function<Tree<T>, K> f) {
+        K transformed = f.apply(this);
         Tree<K> newTree = new Tree<K>(transformed);
         if (chld != null) for (Tree<T> t : chld) {
-            Tree<K> mapped = t.map(f);
+            Tree<K> mapped = t.mapTrees(f);
             mapped.setParent(newTree);
             newTree.addChild(mapped);
         }
