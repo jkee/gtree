@@ -9,7 +9,7 @@
 
   <groupId>org.jkee.gtree</groupId>
   <artifactId>gtree</artifactId>
-  <version>0.4-SNAPSHOT</version>
+  <version>y</version>
   <packaging>jar</packaging>
 
   <name>gtree</name>
