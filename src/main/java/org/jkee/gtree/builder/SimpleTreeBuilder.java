@@ -43,7 +43,7 @@ public class SimpleTreeBuilder<T> {
      * @return list of roots
      * @throws IllegalStateException if no roots found
      */
-    private List<Tree<T>> buildForest(Iterable<? extends T> values) {
+    public List<Tree<T>> buildForest(Iterable<? extends T> values) {
         KeyTreeBuilder<T, T> keyTreeBuilder = new KeyTreeBuilder<T, T>(new KeyTreeBuilder.Funnel<T, T>() {
             @Override
             public T getKey(T node) {

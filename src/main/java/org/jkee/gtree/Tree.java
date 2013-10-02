@@ -84,6 +84,7 @@ public class Tree<T> implements Serializable, Iterable<T> {
     public void addChild(Tree<T> child) {
         if (chld == null) chld = new ArrayList<Tree<T>>();
         chld.add(child);
+        child.setParent(this);
     }
 
 
