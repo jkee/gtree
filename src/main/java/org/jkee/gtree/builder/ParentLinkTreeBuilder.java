@@ -1,6 +1,7 @@
 package org.jkee.gtree.builder;
 
 import com.google.common.collect.Lists;
+import org.jkee.gtree.Forest;
 import org.jkee.gtree.Tree;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class ParentLinkTreeBuilder<T> {
      * @throws IllegalStateException if found no one or more than one root
      */
     public Tree<T> build(Iterable<? extends T> values) {
-        List<Tree<T>> roots = buildForest(values);
+        List<Tree<T>> roots = buildForest(values).getChld();
         if (roots.size() > 1) throw new IllegalStateException("Multiple roots found, size: " + roots.size());
         return roots.get(0);
     }
@@ -43,7 +44,7 @@ public class ParentLinkTreeBuilder<T> {
      * @return list of roots
      * @throws IllegalStateException if no roots found
      */
-    public List<Tree<T>> buildForest(Iterable<? extends T> values) {
+    public Forest<T> buildForest(Iterable<? extends T> values) {
         KeyTreeBuilder<T, T> keyTreeBuilder = new KeyTreeBuilder<T, T>(new KeyTreeBuilder.Funnel<T, T>() {
             @Override
             public T getKey(T node) {
@@ -59,7 +60,7 @@ public class ParentLinkTreeBuilder<T> {
         Map<T, Tree<T>> roots = result.getRoots();
         if (roots.isEmpty())
             throw new IllegalStateException("No roots found, cycle links? Values size: " + result.getAll().size());
-        return Lists.newArrayList(roots.values());
+        return new Forest<T>(Lists.newArrayList(roots.values()));
     }
 
 

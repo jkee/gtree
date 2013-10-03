@@ -1,6 +1,7 @@
 package org.jkee.gtree.builder;
 
 import com.google.common.collect.Maps;
+import org.jkee.gtree.Forest;
 import org.jkee.gtree.Tree;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class PathTreeBuilder<T, E> {
         this.funnel = funnel;
     }
 
-    public List<Tree<T>> build(Iterable<T> values) {
+    public Forest<T> build(Iterable<T> values) {
         /*
         * 1. split by cardinality
         * 2. from low cardinality to high: append nodes
@@ -72,7 +73,7 @@ public class PathTreeBuilder<T, E> {
             }
         }
 
-        return roots;
+        return new Forest<T>(roots);
     }
 
 

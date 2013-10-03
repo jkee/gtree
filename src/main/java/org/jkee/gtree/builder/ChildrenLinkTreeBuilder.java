@@ -3,6 +3,7 @@ package org.jkee.gtree.builder;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import org.jkee.gtree.Forest;
 import org.jkee.gtree.Tree;
 
 import java.util.List;
@@ -48,13 +49,13 @@ public class ChildrenLinkTreeBuilder<T> {
      * @return list of roots
      * @throws IllegalStateException if no roots found
      */
-    public List<Tree<T>> buildForest(Iterable <? extends T> roots) {
-        return Lists.newArrayList(Iterables.transform(roots, new Function<T, Tree<T>>() {
+    public Forest<T> buildForest(Iterable <? extends T> roots) {
+        return new Forest<T>(Lists.newArrayList(Iterables.transform(roots, new Function<T, Tree<T>>() {
             @Override
             public Tree<T> apply(T input) {
                 return build(input);
             }
-        }));
+        })));
     }
 
 

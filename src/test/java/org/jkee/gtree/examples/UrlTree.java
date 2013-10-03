@@ -1,7 +1,7 @@
 package org.jkee.gtree.examples;
 
 import com.google.common.collect.Lists;
-import org.jkee.gtree.Tree;
+import org.jkee.gtree.Forest;
 import org.jkee.gtree.builder.PathTreeBuilder;
 
 import java.util.List;
@@ -27,6 +27,7 @@ public class UrlTree {
                 "/home/url1/suburl",
                 "/home/url1",
                 "/home/url2",
+                "/basket",
                 "/basket/url1",
                 "/basket/url2",
                 "/home/url1/suburl/more",
@@ -34,9 +35,7 @@ public class UrlTree {
                 "/home/url3/more"
         );
         PathTreeBuilder<String, String> builder = new PathTreeBuilder<String, String>(urlFunnel);
-        List<Tree<String>> build = builder.build(urls);
-        for (Tree<String> strings : build) {
-            System.out.println(strings);
-        }
+        Forest<String> build = builder.build(urls);
+        System.out.println(build.toStringTree());
     }
 }

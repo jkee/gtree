@@ -1,7 +1,9 @@
 package org.jkee.gtree.builder;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.jkee.gtree.Forest;
 import org.jkee.gtree.Tree;
 
 import java.util.Map;
@@ -75,6 +77,10 @@ public class KeyTreeBuilder<K, T> {
 
         public Map<K, Tree<T>> getRoots() {
             return roots;
+        }
+
+        public Forest<T> getForest() {
+            return new Forest<T>(Lists.newArrayList(roots.values()));
         }
     }
 

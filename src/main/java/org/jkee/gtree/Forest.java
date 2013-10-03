@@ -51,8 +51,9 @@ public class Forest<T> extends TreeLike<T, Forest<T>> {
 
     @Override
     protected void appendToString(StringBuilder sb, int depth) {
-        for (Tree<T> ts : chld) {
-            ts.appendToString(sb, depth);
+        for (int i = 0; i < chld.size(); i++) {
+            if (i != 0) sb.append(System.getProperty("line.separator"));
+            chld.get(i).appendToString(sb, depth);
         }
     }
 
@@ -92,5 +93,25 @@ public class Forest<T> extends TreeLike<T, Forest<T>> {
                 return input.mapTrees(f);
             }
         })));
+    }
+
+    public List<Tree<T>> getChld() {
+        return chld;
+    }
+
+    public int size() {
+        return chld.size();
+    }
+
+    public boolean isEmpty() {
+        return chld.isEmpty();
+    }
+
+    public boolean add(Tree<T> ts) {
+        return chld.add(ts);
+    }
+
+    public Tree<T> get(int index) {
+        return chld.get(index);
     }
 }
