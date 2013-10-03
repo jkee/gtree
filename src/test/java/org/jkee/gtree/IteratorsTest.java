@@ -2,7 +2,7 @@ package org.jkee.gtree;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
-import org.jkee.gtree.builder.SimpleTreeBuilder;
+import org.jkee.gtree.builder.ParentLinkTreeBuilder;
 import org.jkee.gtree.iterator.BFIterator;
 import org.jkee.gtree.iterator.DFIterator;
 import org.jkee.gtree.iterator.LevelBFIterator;
@@ -34,7 +34,7 @@ public class IteratorsTest {
         }
     }
 
-    private SimpleTreeBuilder<TestEntity> builder;
+    private ParentLinkTreeBuilder<TestEntity> builder;
     private Tree<TestEntity> testTree;
 
     TestEntity te1  ;
@@ -47,7 +47,7 @@ public class IteratorsTest {
 
     @Before
     public void setUp() throws Exception {
-        builder = new SimpleTreeBuilder<TestEntity>(new SimpleTreeBuilder.Funnel<TestEntity>() {
+        builder = new ParentLinkTreeBuilder<TestEntity>(new ParentLinkTreeBuilder.Funnel<TestEntity>() {
             @Override
             public TestEntity getParent(TestEntity node) {
                 return node.parent;

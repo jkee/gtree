@@ -3,9 +3,8 @@ package org.jkee.gtree;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.jkee.gtree.iterator.BFIterator;
-import org.jkee.gtree.iterator.DFIterator;
+import org.jkee.gtree.iterator.TreeDFIterator;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -16,7 +15,7 @@ import java.util.*;
  * @author jkee
  */
 
-public class Tree<T> implements Serializable, Iterable<T> {
+public class Tree<T> extends TreeLike<T, Tree<T>> {
 
     private static final long serialVersionUID = 124356L;
 
@@ -49,27 +48,9 @@ public class Tree<T> implements Serializable, Iterable<T> {
         return parent;
     }
 
-    public List<T> find(Predicate<T> predicate) {
-        List<T> builder = new ArrayList<T>();
-        for (T t : this) {
-            if (predicate.apply(t)) builder.add(t);
-        }
-        return builder;
-    }
-
-    public T findOne(Predicate<T> predicate) {
-        for (T t : this) {
-            if (predicate.apply(t)) return t;
-        }
-        return null;
-    }
-
-    /**
-     * Depth-first
-     */
     @Override
-    public Iterator<T> iterator() {
-        return new DFIterator<T>(this);
+    public Iterator<Tree<T>> treeIterator() {
+        return new TreeDFIterator<T>(this);
     }
 
     /**
@@ -199,13 +180,8 @@ public class Tree<T> implements Serializable, Iterable<T> {
                 '}';
     }
 
-    public String toStringTree() {
-        StringBuilder sb = new StringBuilder();
-        appendToString(sb, 0);
-        return sb.toString();
-    }
-
-    private void appendToString(StringBuilder sb, int depth) {
+    @Override
+    protected void appendToString(StringBuilder sb, int depth) {
         if (depth != 0) sb.append(System.getProperty("line.separator"));
         for (int i = 0; i < depth; i++) {
             sb.append('\t');

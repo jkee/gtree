@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
-import org.jkee.gtree.builder.SimpleTreeBuilder;
+import org.jkee.gtree.builder.ParentLinkTreeBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,11 +18,11 @@ import static org.junit.Assert.assertEquals;
  */
 public class TreeTest {
 
-    private static class TestEntity {
+    static class TestEntity {
         int id;
         TestEntity parent;
 
-        private TestEntity(int id, TestEntity parent) {
+        TestEntity(int id, TestEntity parent) {
             this.id = id;
             this.parent = parent;
         }
@@ -33,8 +33,8 @@ public class TreeTest {
         }
     }
 
-    private SimpleTreeBuilder<TestEntity> builder;
-    private Tree<TestEntity> testTree;
+    ParentLinkTreeBuilder<TestEntity> builder;
+    Tree<TestEntity> testTree;
 
     TestEntity te1  ;
     TestEntity te12 ;
@@ -46,7 +46,7 @@ public class TreeTest {
 
     @Before
     public void setUp() throws Exception {
-        builder = new SimpleTreeBuilder<TestEntity>(new SimpleTreeBuilder.Funnel<TestEntity>() {
+        builder = new ParentLinkTreeBuilder<TestEntity>(new ParentLinkTreeBuilder.Funnel<TestEntity>() {
             @Override
             public TestEntity getParent(TestEntity node) {
                 return node.parent;

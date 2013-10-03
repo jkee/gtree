@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author jkee
  */
-public class SimpleTreeBuilder<T> {
+public class ParentLinkTreeBuilder<T> {
 
     public static interface Funnel<T> {
         public T getParent(T node);
@@ -21,7 +21,7 @@ public class SimpleTreeBuilder<T> {
 
     private final Funnel<T> funnel;
 
-    public SimpleTreeBuilder(Funnel<T> funnel) {
+    public ParentLinkTreeBuilder(Funnel<T> funnel) {
         this.funnel = funnel;
     }
 
