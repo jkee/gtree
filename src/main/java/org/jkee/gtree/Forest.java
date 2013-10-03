@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.sun.istack.internal.Nullable;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -26,7 +25,7 @@ public class Forest<T> extends TreeLike<T, Forest<T>> {
     public Iterator<Tree<T>> treeIterator() {
         Iterator<Iterator<Tree<T>>> treeIterators = Iterators.transform(chld.iterator(), new Function<Tree<T>, Iterator<Tree<T>>>() {
             @Override
-            public Iterator<Tree<T>> apply(@Nullable Tree<T> input) {
+            public Iterator<Tree<T>> apply(Tree<T> input) {
                 return input.treeIterator();
             }
         });
@@ -67,7 +66,7 @@ public class Forest<T> extends TreeLike<T, Forest<T>> {
     public <K> Forest<K> map(final Function<T, K> f) {
         return new Forest<K>(Lists.newArrayList(Lists.transform(chld, new Function<Tree<T>, Tree<K>>() {
             @Override
-            public Tree<K> apply(@Nullable org.jkee.gtree.Tree<T> input) {
+            public Tree<K> apply(org.jkee.gtree.Tree<T> input) {
                 return input.map(f);
             }
         })));
@@ -89,7 +88,7 @@ public class Forest<T> extends TreeLike<T, Forest<T>> {
     public <K> Forest<K> mapTrees(final Function<Tree<T>, K> f) {
         return new Forest<K>(Lists.newArrayList(Lists.transform(chld, new Function<Tree<T>, Tree<K>>() {
             @Override
-            public Tree<K> apply(@Nullable org.jkee.gtree.Tree<T> input) {
+            public Tree<K> apply(org.jkee.gtree.Tree<T> input) {
                 return input.mapTrees(f);
             }
         })));
