@@ -40,11 +40,11 @@ public class KeyTreeBuilder<K, T> {
     }
 
     public BuildResult<K, T> build(Iterable<? extends T> values) {
-        Map<K, Tree<T>> nodes = Maps.newHashMap();
+        Map<K, Tree<T>> nodes = Maps.newLinkedHashMap();
         for (T value : values) {
             nodes.put(funnel.getKey(value), new Tree<T>(value));
         }
-        Map<K, Tree<T>> roots = Maps.newHashMap();
+        Map<K, Tree<T>> roots = Maps.newLinkedHashMap();
         for (Map.Entry<K, Tree<T>> entry : nodes.entrySet()) {
             Tree<T> valueTree = entry.getValue();
             T value = valueTree.getValue();

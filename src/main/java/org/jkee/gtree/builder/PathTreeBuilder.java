@@ -4,10 +4,7 @@ import com.google.common.collect.Maps;
 import org.jkee.gtree.Forest;
 import org.jkee.gtree.Tree;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * If you can define element -> path relation, this builder might be helpful
@@ -66,7 +63,7 @@ public class PathTreeBuilder<T, E> {
                 if (!parentFound) roots.add(valueTree);
 
                 if (!treesByCardinality.containsKey(path.size())) {
-                    treesByCardinality.put(path.size(), new HashMap<List<E>, Tree<T>>());
+                    treesByCardinality.put(path.size(), new LinkedHashMap<List<E>, Tree<T>>());
                 }
                 //todo handle collision
                 treesByCardinality.get(path.size()).put(path, valueTree);
