@@ -34,7 +34,7 @@ public class PathTreeBuilder<T, E> {
             List<E> path = funnel.getPath(value);
             int cardinality = path.size();
             if (!byCardinality.containsKey(cardinality)) {
-                byCardinality.put(cardinality, new HashMap<List<E>, T>());
+                byCardinality.put(cardinality, new LinkedHashMap<List<E>, T>());
             }
             //todo handle collision
             byCardinality.get(cardinality).put(path, value);
