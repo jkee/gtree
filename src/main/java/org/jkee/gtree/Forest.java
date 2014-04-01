@@ -5,6 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +34,13 @@ public class Forest<T> extends TreeLike<T, Forest<T>> {
     }
 
     @Override
-    public void sort(Comparator<T> comparator) {
+    public void sort(final Comparator<T> comparator) {
+        Collections.sort(chld, new Comparator<Tree<T>>() {
+            @Override
+            public int compare(Tree<T> o1, Tree<T> o2) {
+                return comparator.compare(o1.getValue(), o2.getValue());
+            }
+        });
         for (Tree<T> ts : chld) {
             ts.sort(comparator);
         }
