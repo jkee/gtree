@@ -23,7 +23,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
     //nullable (if root)
     private Tree<T> parent;
     //nullable (if no children)
-    private List<Tree<T>> chld;
+    private List<Tree<T>> children;
 
     public Tree(T value) {
         this.value = value;
@@ -31,13 +31,13 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
 
     public Tree(T value, List<Tree<T>> children) {
         this.value = value;
-        chld = children;
+        this.children = children;
     }
 
     // ::::: Access operations
 
     public List<Tree<T>> getChildren() {
-        return chld;
+        return children;
     }
 
     public T getValue() {
@@ -63,8 +63,8 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
     // ::::: Modification operations
 
     public void addChild(Tree<T> child) {
-        if (chld == null) chld = new ArrayList<Tree<T>>();
-        chld.add(child);
+        if (children == null) children = new ArrayList<Tree<T>>();
+        children.add(child);
         child.setParent(this);
     }
 
@@ -105,7 +105,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
     public <K> Tree<K> mapTrees(Function<Tree<T>, K> f) {
         K transformed = f.apply(this);
         Tree<K> newTree = new Tree<K>(transformed);
-        if (chld != null) for (Tree<T> t : chld) {
+        if (children != null) for (Tree<T> t : children) {
             Tree<K> mapped = t.mapTrees(f);
             mapped.setParent(newTree);
             newTree.addChild(mapped);
@@ -118,14 +118,14 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
      * @param comparator sorting comparator
      */
     public void sort(final Comparator<T> comparator) {
-        if (chld != null) {
-            Collections.sort(chld, new Comparator<Tree<T>>() {
+        if (children != null) {
+            Collections.sort(children, new Comparator<Tree<T>>() {
                 @Override
                 public int compare(Tree<T> o1, Tree<T> o2) {
                     return comparator.compare(o1.value, o2.value);
                 }
             });
-            for (Tree<T> child : chld) {
+            for (Tree<T> child : children) {
                 child.sort(comparator);
             }
         }
@@ -138,9 +138,9 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
     public Tree<T> filter(Predicate<T> predicate) {
         if (!predicate.apply(value)) return null;
         Tree<T> newTree = new Tree<T>(value);
-        if (chld == null) return newTree;
+        if (children == null) return newTree;
         List<Tree<T>> newChilds = new ArrayList<Tree<T>>();
-        for (Tree<T> tTree : chld) {
+        for (Tree<T> tTree : children) {
             Tree<T> filtered = tTree.filter(predicate);
             if (filtered != null) {
                 filtered.setParent(newTree);
@@ -148,7 +148,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
             }
         }
         if (newChilds.isEmpty()) return newTree;
-        newTree.chld = newChilds;
+        newTree.children = newChilds;
         return newTree;
     }
 
@@ -160,7 +160,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
 
         Tree tree = (Tree) o;
 
-        if (chld != null ? !chld.equals(tree.chld) : tree.chld != null) return false;
+        if (children != null ? !children.equals(tree.children) : tree.children != null) return false;
         if (!value.equals(tree.value)) return false;
 
         return true;
@@ -169,7 +169,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
     @Override
     public int hashCode() {
         int result = value.hashCode();
-        result = 31 * result + (chld != null ? chld.hashCode() : 0);
+        result = 31 * result + (children != null ? children.hashCode() : 0);
         return result;
     }
 
@@ -187,7 +187,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
             sb.append('\t');
         }
         sb.append(value);
-        if (chld != null) for (Tree<T> ts : chld) {
+        if (children != null) for (Tree<T> ts : children) {
             ts.appendToString(sb, depth + 1);
         }
     }
