@@ -22,8 +22,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
     private final T value;
     //nullable (if root)
     private Tree<T> parent;
-    //nullable (if no children)
-    private List<Tree<T>> children;
+    private List<Tree<T>> children = new ArrayList<Tree<T>>();
 
     public Tree(T value) {
         this.value = value;
@@ -63,7 +62,6 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
     // ::::: Modification operations
 
     public void addChild(Tree<T> child) {
-        if (children == null) children = new ArrayList<Tree<T>>();
         children.add(child);
         child.setParent(this);
     }
@@ -105,7 +103,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
     public <K> Tree<K> mapTrees(Function<Tree<T>, K> f) {
         K transformed = f.apply(this);
         Tree<K> newTree = new Tree<K>(transformed);
-        if (children != null) for (Tree<T> t : children) {
+        for (Tree<T> t : children) {
             Tree<K> mapped = t.mapTrees(f);
             mapped.setParent(newTree);
             newTree.addChild(mapped);
@@ -118,16 +116,14 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
      * @param comparator sorting comparator
      */
     public void sort(final Comparator<T> comparator) {
-        if (children != null) {
-            Collections.sort(children, new Comparator<Tree<T>>() {
-                @Override
-                public int compare(Tree<T> o1, Tree<T> o2) {
-                    return comparator.compare(o1.value, o2.value);
-                }
-            });
-            for (Tree<T> child : children) {
-                child.sort(comparator);
+        Collections.sort(children, new Comparator<Tree<T>>() {
+            @Override
+            public int compare(Tree<T> o1, Tree<T> o2) {
+                return comparator.compare(o1.value, o2.value);
             }
+        });
+        for (Tree<T> child : children) {
+            child.sort(comparator);
         }
     }
 
@@ -138,7 +134,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
     public Tree<T> filter(Predicate<T> predicate) {
         if (!predicate.apply(value)) return null;
         Tree<T> newTree = new Tree<T>(value);
-        if (children == null) return newTree;
+        if (children.isEmpty()) return newTree;
         List<Tree<T>> newChilds = new ArrayList<Tree<T>>();
         for (Tree<T> tTree : children) {
             Tree<T> filtered = tTree.filter(predicate);
@@ -160,7 +156,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
 
         Tree tree = (Tree) o;
 
-        if (children != null ? !children.equals(tree.children) : tree.children != null) return false;
+        if (!children.equals(tree.children)) return false;
         if (!value.equals(tree.value)) return false;
 
         return true;
@@ -169,7 +165,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
     @Override
     public int hashCode() {
         int result = value.hashCode();
-        result = 31 * result + (children != null ? children.hashCode() : 0);
+        result = 31 * result + children.hashCode();
         return result;
     }
 
@@ -187,7 +183,7 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
             sb.append('\t');
         }
         sb.append(value);
-        if (children != null) for (Tree<T> ts : children) {
+        for (Tree<T> ts : children) {
             ts.appendToString(sb, depth + 1);
         }
     }
