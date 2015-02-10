@@ -39,6 +39,10 @@ public class Tree<T> extends TreeLike<T, Tree<T>> {
         return children;
     }
 
+    public boolean hasChildren() {
+        return !children.isEmpty();
+    }
+
     public T getValue() {
         return value;
     }
